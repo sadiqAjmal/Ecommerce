@@ -1,0 +1,10 @@
+.price{
+    color:blue;
+    font-size: larger;
+    font-weight: bold;
+}
+.price-cart
+{
+    text-align: center;
+    font-weight: bold;
+}

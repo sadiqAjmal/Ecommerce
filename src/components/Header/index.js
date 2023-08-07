@@ -2,54 +2,54 @@ import React, { useEffect, useState } from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Navbar, Nav, Container, Badge } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
-import { FaShoppingCart, FaBell, FaSignInAlt } from 'react-icons/fa';
-import { useSelector } from 'react-redux';
-
+import { FaShoppingCart, FaSignInAlt } from 'react-icons/fa';
+import { useSelector, useDispatch } from 'react-redux';
+import LoggedIn from '../logged-in';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
+import { fetchProducts,updateCount,updateSort, resetFind } from '../../Redux/slices/products-slice';
 function Header({ setShowCart, setShowOrders }) {
+  const navigate=useNavigate();
+  const sortBy=useSelector((store)=>store.products.sortBy)
   const cartItems = useSelector((state) => state.cart.value);
-  const [cartItemCount, setCartItemCount] = useState(cartItems.length);
-
-  useEffect(() => {
-    setCartItemCount(cartItems.length);
-  }, [cartItems]);
-
+  const LoginInfo = useSelector((store) => store.auth);
+  const dispatch = useDispatch();
+  const handleRefresh=()=>{
+    dispatch(fetchProducts({sortBy:sortBy,skip:0,limit:8,find:""}));
+    dispatch(updateSort({createdAt:-1}));
+    dispatch(resetFind());
+    navigate("/")
+  }
   return (
     <Navbar bg="light" variant="light" className="fixed-top">
       <Container>
-        <Navbar.Brand href="/">ECommerce</Navbar.Brand>
+      <Navbar.Brand as="button" onClick={handleRefresh} className="btn btn-link">ECommerce</Navbar.Brand>
         <Navbar.Toggle />
         <Navbar.Collapse className="justify-content-end">
           <Nav>
-            <Nav.Link>
-              <Link to="/cart">
-                <div style={{ position: 'relative', display: 'inline-block' }}>
+          {LoginInfo.role==="user"&&<Nav.Link>
+              <Link to={LoginInfo.token ? "/cart" : "/login"}>
+                 <div style={{ position: 'relative', display: 'inline-block' }}>
                   <FaShoppingCart className='text-black' size={20} />
-                  {cartItemCount > 0 && (
+                  {cartItems.length > 0 && (
                     <Badge
                       bg="danger"
                       pill
                       className="position-absolute top-0 start-100 translate-middle p-1"
                       style={{ fontSize: '0.7rem' }}
                     >
-                      {cartItemCount}
+                      {cartItems.length}
                     </Badge>
                   )}
                 </div>
               </Link>
-            </Nav.Link>
+            </Nav.Link>}
             <Nav.Link>
-              <Link to="/notification">
-                <Badge bg="light">
-                  <FaBell className='text-black' size={20} />
-                </Badge>
-              </Link>
-            </Nav.Link>
-            <Nav.Link>
-              <Link to='/login'>
+              {LoginInfo.token ? <LoggedIn /> :  <Link to='/login'>
                 <Badge bg="light">
                   <FaSignInAlt className='text-black' size={20} />
                 </Badge>
-              </Link>
+              </Link>}
             </Nav.Link>
           </Nav>
         </Navbar.Collapse>
@@ -57,5 +57,4 @@ function Header({ setShowCart, setShowOrders }) {
     </Navbar>
   );
 }
-
 export default Header;

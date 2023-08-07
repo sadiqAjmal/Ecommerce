@@ -3,7 +3,8 @@ import './style.css'
 function Price(props) {
   return (
     <>
-      {props.title&&<span>{props.title}:</span>} <span className={props.className}>${props.price}</span>
+      {props.title&&<span>{props.title}:</span>}
+      <span className={props.className}>${props.price}</span>
     </>
   );
 }

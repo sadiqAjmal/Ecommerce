@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import ReactDOM from 'react-dom/client';
 import { PersistGate } from 'redux-persist/integration/react';
 import './index.css';
@@ -20,5 +20,4 @@ root.render(
     
   </React.StrictMode>
 );
-
 reportWebVitals();

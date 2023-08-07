@@ -1,33 +1,39 @@
-import React from 'react';
+import React,{useEffect} from 'react';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Display from './components/display-card';
-import Header from './components/Header';
-import Heading from './components/Heading';
-import LoginPage from './components/LoginPage';
-import CartHeading from './components/CartHeading';
+import Login from './components/auth-page/login-page';
+import Signup from './components/auth-page/sign-up';
+import NewPassword from './components/auth-page/new-pass';
+import ForgotPassword from './components/auth-page/forgot-pass';
 import { Routes,Route } from 'react-router';
-import CartTable from './components/ItemsTable';
-import CartFooter from './components/CartFooter';
-import OrderTable from './components/OrderTable';
-import Home from './components/HomePage';
-import SideBar from './components/OrdeDetails';
-import orders from './components/OrderTable/Order';
-import RemoveAlert from './components/DeleteItem';
-import Cart from './components/Cart';
-import Orders from './components/OrderPage';
-import SignUpPage from './components/SignUp';
-import ResetPage from './components/ForgotPass';
-import NewPass from './components/NewPass'
+import Home from './components/home-page';
+import Cart from './components/cart';
+import Orders from './components/order-page';
+import { useDispatch,useSelector } from 'react-redux';
+import { fetchProducts } from './Redux/slices/products-slice';
+import AdminPage from './components/admin/admin-page';
+import VerifyUser from './components/verify-user';
 function App() {
+  const dispatch=useDispatch();
+  const sortBy=useSelector((store)=>store.products.sortBy);
+  const loginInfo = useSelector((store) => store.auth);
+ 
+ useEffect(()=>{ 
+  dispatch(fetchProducts( {sortBy:sortBy,
+    skip:0,
+    limit:8,
+    find:"",
+  })) },[]);
   return (
       <Routes>
-      <Route path="/" element={<Home/>}></Route>
-      <Route exact path="/login" element={<LoginPage/>}></Route>
-      <Route exact path='/signUp' element={<SignUpPage/>}></Route>
-      <Route exact path='/reset' element={<ResetPage/>}></Route>
+      <Route path="/" element={(loginInfo.role==='admin')?<AdminPage/>:<Home/>}></Route>
+      <Route exact path="/login" element={<Login/>}></Route>
+      <Route exact path='/signUp' element={<Signup/>}></Route>
+      <Route exact path='/reset' element={<ForgotPassword/>}></Route>
       <Route exact path="/cart" element={<Cart/>}> </Route>
       <Route  exact path="/orders" element={<Orders/>}></Route>
-      </Routes>
-      );
+      <Route path="/newpass/:token" element={<NewPassword/>} />
+      <Route path="/verify-user/:token" element={<VerifyUser/>} />
+    </Routes>
+  );
 }
 export default App;

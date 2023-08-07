@@ -1,5 +1,10 @@
-.price{
+.price-card
+{
     color:blue;
+    font-size: x-large;
+}
+.price{
+    color:gray;
     font-size: larger;
     font-weight: bold;
 }

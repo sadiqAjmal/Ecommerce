@@ -1,20 +1,20 @@
 import React from "react";
-import 'bootstrap/dist/css/bootstrap.min.css';
-import Element from "../Card";
-import {useSelector} from "react-redux/es/hooks/useSelector";
+import "bootstrap/dist/css/bootstrap.min.css";
+import Element from "../card";
 import { Container, Row, Col } from "react-bootstrap";
-function Display(props) {
-  const items = useSelector((state)=> state.products.value);
+
+function Display({items}) {
   return (
-    <Container>
-      <Row>
+    <Container fluid>
+      <Row xs={1} md={2} lg={4}>
         {items.map((item) => (
-          <Col key={item.key} className='col-12 col-md-6 col-lg-3' style={{ marginTop: "2%" }}>
-            <Element item={item}/>
+          <Col key={item._id} style={{ marginBottom: "2%" }}>
+            <Element item={item} />
           </Col>
         ))}
       </Row>
     </Container>
   );
 }
+
 export default Display;

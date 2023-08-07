@@ -1,0 +1,26 @@
+.h1 {
+    color: blue;
+    text-align: center;
+    margin-top: 2%;
+  }
+  
+  .card {
+    width: 70%;
+    margin-left: 15%;
+    margin-top: 5%;
+  }
+  
+  .button {
+    width: 100%;
+    margin: 1%;
+  }
+  
+  .text {
+    text-align: center;
+  }
+  
+  .checkbox {
+    margin: 1%;
+    margin-left: 2%;
+  }
+  

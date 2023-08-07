@@ -5,5 +5,4 @@ const ApplyMiddlewares = (app) => {
   app.use(cors());
   app.use(express.json());
 };
-
 export default ApplyMiddlewares;
